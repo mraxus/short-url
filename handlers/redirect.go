@@ -1,7 +1,7 @@
 package handlers
 
 import (
-    "log"
+    "fmt"
     "net/http"
     
     "github.com/gorilla/mux"
@@ -16,11 +16,11 @@ func Redirect(w http.ResponseWriter, r *http.Request) {
 	url, exists := engine.Resolve(hash)
 	
 	if exists {
-		log.Println("Redirecting", hash, "-->", url)
+		fmt.Println("Redirecting", hash, "-->", url)
 		http.Redirect(w, r, url, 301)
 		return
 	}
 	
-	log.Println("Cannot redirect", hash, ": not found")
+	fmt.Println("Cannot redirect", hash, ": not found")
 	http.Error(w, http.StatusText(404), 404)
 }

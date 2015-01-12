@@ -1,14 +1,18 @@
 package handlers
 
 import (
+    "fmt"
 	"html/template"
-    "log"
     "net/http"
     
     "github.com/mraxus/short-url/engine"
 )
 
 var host = "http://localhost:8080/"
+
+func SetHost(value string) {
+	host = value
+}
 
 func Shorten(w http.ResponseWriter, r *http.Request) {
 	
@@ -17,7 +21,7 @@ func Shorten(w http.ResponseWriter, r *http.Request) {
     t, err := template.ParseFiles(filename)
     
     if err != nil {
-    	log.Println("Error: Could not load template", filename)
+    	fmt.Println("Error: Could not load template", filename)
 		http.Error(w, http.StatusText(500), 500)
         return 
     }
@@ -25,16 +29,18 @@ func Shorten(w http.ResponseWriter, r *http.Request) {
     r.ParseForm()
     
     if r.Form["url"] == nil {
-    	log.Println("form field 'url' is not given")
+    	fmt.Println("form field 'url' is not given")
 		http.Error(w, http.StatusText(400), 400)
 		return
     }
     
     url := r.FormValue("url")
     
-    log.Println("url", url)
-    
     hash := engine.Shorten(url)
+    
+    shortened := host + hash
+    
+    fmt.Println(url + " --> " + shortened)
     
 	t.Execute(w, map[string] string {"ShortenedUrl": host + hash})
 }

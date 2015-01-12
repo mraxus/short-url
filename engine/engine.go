@@ -1,8 +1,9 @@
 package engine
 
 import (
-	"log"
+	"fmt"
 	"math/rand"
+	"time"
 )
 
 var runes = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890")
@@ -11,7 +12,8 @@ var currentHashGenerationLength int = 3
 var lookup map[string]string
 
 func init() {
-	log.Println("engine init()")
+	fmt.Println("engine init()")
+	rand.Seed( time.Now().UTC().UnixNano())
 	
 	lookup = make(map[string]string)
 }

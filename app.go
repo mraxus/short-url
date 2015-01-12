@@ -1,9 +1,10 @@
 package main 
 
 import (
-    "log"
+    "fmt"
     "net/http"
     "os"
+    
     
     "github.com/gorilla/mux"
     "github.com/mraxus/short-url/handlers"
@@ -11,20 +12,21 @@ import (
 
 func main() {
 	
-	var port string = os.Getenv("PORT")
+	host := os.Getenv("HOST")
+	port := os.Getenv("PORT")
 	
-	for _, value := range os.Environ() {
-		log.Println(value)
+    fmt.Println("HOST: " + host)
+	if host != "" {
+		fmt.Println("Setting new host: " + host)
+		handlers.SetHost(host)
 	}
-	
-	
 	if port == "" { port = "8080" }
 	
 
 	registerRoutes()
 
     
-    log.Println("String server on port " + port)
+    fmt.Println("String server on port " + port)
     err := http.ListenAndServe(":" + port, nil)
     if err != nil {
 		panic(err)
