@@ -8,7 +8,7 @@ import (
 var runes = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890")
 
 // The length of the key to be generated
-var currentKeyLength int = 1
+var currentKeyLength int = 3
 
 // The lookup map stores all keys with its associated redirect urls
 // Should this service become a real server and used in production,
