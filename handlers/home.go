@@ -3,6 +3,7 @@ package handlers
 import (
     "fmt"
 	"io/ioutil"
+    "log"
     "net/http"
 )
 
@@ -13,7 +14,8 @@ func Home(w http.ResponseWriter, r *http.Request) {
     body, err := ioutil.ReadFile(filename)
     
     if err != nil {
-    	fmt.Fprintf(w, "Hi there, I could not load the page =(")
+    	log.Println("Error: Could not load html file", filename)
+		http.Error(w, http.StatusText(500), 500)
         return 
     }
 

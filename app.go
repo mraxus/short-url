@@ -1,8 +1,8 @@
 package main 
 
 import (
+    "log"
     "net/http"
-    "fmt"
     "os"
     
     "github.com/gorilla/mux"
@@ -13,16 +13,21 @@ func main() {
 	
 	var port string = os.Getenv("PORT")
 	
+	for _, value := range os.Environ() {
+		log.Println(value)
+	}
+	
+	
 	if port == "" { port = "8080" }
 	
 
 	registerRoutes()
 
     
-    fmt.Println("String server on port " + port)
+    log.Println("String server on port " + port)
     err := http.ListenAndServe(":" + port, nil)
     if err != nil {
-      panic(err)
+		panic(err)
     }
 }
 
