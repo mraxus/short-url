@@ -4,16 +4,12 @@ import (
     "fmt"
 	"html/template"
     "net/http"
+    netUrl "net/url"
     
     "github.com/mraxus/short-url/engine"
 )
 
-var host = "http://localhost:8080/"
-
-func SetHost(value string) {
-	host = value
-}
-
+// Http handle that takes a url form parameter and converts it into a shortened URL
 func Shorten(w http.ResponseWriter, r *http.Request) {
 	
 	filename := "templates/shorten.html"
@@ -30,17 +26,23 @@ func Shorten(w http.ResponseWriter, r *http.Request) {
     
     if r.Form["url"] == nil {
     	fmt.Println("form field 'url' is not given")
-		http.Error(w, http.StatusText(400), 400)
+		http.Error(w, "form field 'url' is not given", 400)
 		return
     }
     
     url := r.FormValue("url")
+    _, err = netUrl.ParseRequestURI(url)
     
-    hash := engine.Shorten(url)
+    if err != nil {
+    	fmt.Println("form field 'url' is not correctly formatted")
+		http.Error(w, "form field 'url' is not correctly formatted", 400)
+		return
+    }
     
-    shortened := host + hash
+    key := engine.Shorten(url)
+    shortenedUrl := GetHost() + key
     
-    fmt.Println(url + " --> " + shortened)
+    fmt.Println(url + " --> " + shortenedUrl)
     
-	t.Execute(w, map[string] string {"ShortenedUrl": host + hash})
+	t.Execute(w, map[string] string { "ShortenedUrl": shortenedUrl })
 }

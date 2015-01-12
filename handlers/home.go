@@ -6,6 +6,7 @@ import (
     "net/http"
 )
 
+// Http handle that returns the main page of the web server
 func Home(w http.ResponseWriter, r *http.Request) {
 	
 	filename := "templates/index.html"

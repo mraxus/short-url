@@ -9,6 +9,7 @@ import (
     "github.com/mraxus/short-url/engine"
 )
 
+// Http handle that redirects any existing shortened URL to its indended target URL
 func Redirect(w http.ResponseWriter, r *http.Request) {
 
 	vars := mux.Vars(r)
